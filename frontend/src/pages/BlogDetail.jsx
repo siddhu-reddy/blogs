@@ -70,6 +70,16 @@ const BlogDetail = () => {
       <div className="bg-white rounded-lg shadow-md p-8">
         <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
         
+        {blog.coverImage && (
+          <div className="mb-8">
+            <img
+              src={blog.coverImage}
+              alt={blog.title}
+              className="w-full h-96 object-cover rounded-lg shadow-md"
+            />
+          </div>
+        )}
+        
         <div className="flex justify-between items-center text-gray-600 mb-8">
           <div>
             By {blog.author.name}

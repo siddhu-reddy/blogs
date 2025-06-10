@@ -57,6 +57,15 @@ const BlogList = () => {
             key={blog._id}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
+            {blog.coverImage && (
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={blog.coverImage}
+                  alt={blog.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-2">
                 <Link

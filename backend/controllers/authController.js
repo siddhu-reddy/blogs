@@ -4,7 +4,13 @@ import User from '../models/User.js';
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    console.log(req.body);
+
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide all required fields'
+      });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -27,7 +33,7 @@ export const register = async (req, res) => {
     // Generate token
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
 
@@ -54,7 +60,14 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email);
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide email and password'
+      });
+    }
+
     // Find user
     const user = await User.findOne({ email });
     if (!user) {
@@ -63,7 +76,7 @@ export const login = async (req, res) => {
         message: 'Invalid credentials' 
       });
     }
-    console.log(1111);
+
     // Check password
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
@@ -76,7 +89,7 @@ export const login = async (req, res) => {
     // Generate token
     const token = jwt.sign(
       { userId: user._id },
-      process.env.JWT_SECRET,
+      process.env.JWT_SECRET || 'your-secret-key',
       { expiresIn: '7d' }
     );
 
@@ -103,6 +116,12 @@ export const login = async (req, res) => {
 export const getCurrentUser = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password');
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
     res.json({
       success: true,
       data: user
