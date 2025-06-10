@@ -10,10 +10,12 @@ import { initializeSocket } from "./socket/socket.js";
 
 import authRoutes from "./routes/auth.js";
 import blogRoutes from "./routes/blogs.js";
-
+import path from "path";
 const app = express();
 const server = http.createServer(app);
-
+const _dirname=path.dirname("")
+const buildpath=path.join(_dirname,"../frontend/dist")
+app.use(express.static(buildpath));
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -26,8 +28,7 @@ mongoose
 
   app.use(
     cors({
-      origin: "http://localhost:5173", // frontend's origin
-      credentials: true,               // allow cookies or auth headers
+      "origin":"*",
     })
   ); // CORS handles cross-origin requests, not payload size
 app.use(express.json({ limit: "20mb" })); // Set 10MB limit for JSON payloads
