@@ -18,7 +18,7 @@ const BlogDetail = () => {
   const fetchBlog = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/blogs/${id}`);
+      const response = await axios.get(`https://blogs-1-gu8b.onrender.com/api/blogs/${id}`);
       setBlog(response.data);
       setError('');
     } catch (err) {
@@ -31,7 +31,7 @@ const BlogDetail = () => {
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
-        await axios.delete(`http://localhost:8000/api/blogs/${id}`);
+        await axios.delete(`https://blogs-1-gu8b.onrender.com/api/blogs/${id}`);
         navigate('/');
       } catch (err) {
         setError('Failed to delete blog');

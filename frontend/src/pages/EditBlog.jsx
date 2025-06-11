@@ -18,7 +18,7 @@ const EditBlog = () => {
   const fetchBlog = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/blogs/${id}`);
+      const response = await axios.get(`https://blogs-1-gu8b.onrender.com/api/blogs/${id}`);
       setTitle(response.data.title);
       setContent(response.data.content);
       setError('');
@@ -35,7 +35,7 @@ const EditBlog = () => {
     setSaving(true);
 
     try {
-      await axios.put(`http://localhost:8000/api/blogs/${id}`, {
+      await axios.put(`https://blogs-1-gu8b.onrender.com/api/blogs/${id}`, {
         title,
         content
       });

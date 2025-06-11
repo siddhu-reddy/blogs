@@ -84,7 +84,7 @@ const CreateBlog = () => {
         return;
       }
 
-      const response = await axios.post('http://localhost:8000/api/blogs', 
+      const response = await axios.post('https://blogs-1-gu8b.onrender.com/api/blogs', 
         { 
           title, 
           content,

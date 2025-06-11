@@ -17,7 +17,7 @@ const BlogList = () => {
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/blogs?page=${currentPage}`);
+      const response = await axios.get(`https://blogs-1-gu8b.onrender.com/api/blogs?page=${currentPage}`);
       setBlogs(response.data.blogs);
       setTotalPages(response.data.totalPages);
       setError('');

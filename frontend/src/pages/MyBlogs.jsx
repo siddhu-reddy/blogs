@@ -20,7 +20,7 @@ const MyBlogs = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       const response = await axios.get(
-        `http://localhost:8000/api/blogs/user/blogs?page=${currentPage}`,
+        `https://blogs-1-gu8b.onrender.com/api/blogs/user/blogs?page=${currentPage}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -41,7 +41,7 @@ const MyBlogs = () => {
     if (window.confirm('Are you sure you want to delete this blog?')) {
       try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:8000/api/blogs/${blogId}`, {
+        await axios.delete(`https://blogs-1-gu8b.onrender.com/api/blogs/${blogId}`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
