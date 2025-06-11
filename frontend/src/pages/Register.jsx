@@ -26,6 +26,7 @@ const Register = () => {
           localStorage.setItem('token', loginResult.data.token);
           login(loginResult.data.user);
           navigate('/');
+          window.location.reload();
         }
       }
     } catch (err) {

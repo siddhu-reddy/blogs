@@ -16,10 +16,22 @@ const Navbar = () => {
             {user ? (
               <>
                 <Link
+                  to="/"
+                  className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Home
+                </Link>
+                <Link
                   to="/create"
-                  className="text-gray-600 hover:text-gray-800"
+                  className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium"
                 >
                   Create Blog
+                </Link>
+                <Link
+                  to="/my-blogs"
+                  className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  My Blogs
                 </Link>
                 <button
                   onClick={logout}

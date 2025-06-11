@@ -122,4 +122,29 @@ export const deleteBlog = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error deleting blog' });
   }
+};
+
+export const getUserBlogs = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const skip = (page - 1) * limit;
+
+    const blogs = await Blog.find({ author: req.user._id })
+      .populate('author', 'name email')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Blog.countDocuments({ author: req.user._id });
+
+    res.json({
+      blogs,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalBlogs: total
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching user blogs' });
+  }
 }; 

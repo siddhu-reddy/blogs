@@ -6,6 +6,7 @@ import BlogList from './pages/BlogList';
 import BlogDetail from './pages/BlogDetail';
 import CreateBlog from './pages/CreateBlog';
 import EditBlog from './pages/EditBlog';
+import MyBlogs from './pages/MyBlogs';
 import Navbar from './components/Navbar';
 
 const PrivateRoute = ({ children }) => {
@@ -26,6 +27,14 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<BlogList />} />
             <Route path="/blogs/:id" element={<BlogDetail />} />
+            <Route
+              path="/my-blogs"
+              element={
+                <PrivateRoute>
+                  <MyBlogs />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/create"
               element={

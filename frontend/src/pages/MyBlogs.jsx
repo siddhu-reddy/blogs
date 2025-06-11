@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../contexts/AuthContext';
 
-const BlogList = () => {
+const MyBlogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -12,19 +12,44 @@ const BlogList = () => {
   const { user } = useAuth();
 
   useEffect(() => {
-    fetchBlogs();
+    fetchMyBlogs();
   }, [currentPage]);
-  const fetchBlogs = async () => {
+
+  const fetchMyBlogs = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8000/api/blogs?page=${currentPage}`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(
+        `http://localhost:8000/api/blogs/user/blogs?page=${currentPage}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
       setBlogs(response.data.blogs);
       setTotalPages(response.data.totalPages);
       setError('');
     } catch (err) {
-      setError('Failed to fetch blogs');
+      setError('Failed to fetch your blogs');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async (blogId) => {
+    if (window.confirm('Are you sure you want to delete this blog?')) {
+      try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`http://localhost:8000/api/blogs/${blogId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        fetchMyBlogs(); // Refresh the list after deletion
+      } catch (err) {
+        setError('Failed to delete blog');
+      }
     }
   };
 
@@ -47,7 +72,13 @@ const BlogList = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Blog Posts</h1>
+        <h1 className="text-3xl font-bold">My Blog Posts</h1>
+        <Link
+          to="/create"
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Create New Blog
+        </Link>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -77,11 +108,24 @@ const BlogList = () => {
               <p className="text-gray-600 mb-4">
                 {blog.content.substring(0, 150)}...
               </p>
-              <div className="flex justify-between items-center text-sm text-gray-500">
-                <span>By {blog.author.name}</span>
+              <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
                 <span>
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </span>
+              </div>
+              <div className="flex space-x-2">
+                <Link
+                  to={`/edit/${blog._id}`}
+                  className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => handleDelete(blog._id)}
+                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
@@ -90,7 +134,7 @@ const BlogList = () => {
 
       {blogs.length === 0 && (
         <div className="text-center text-gray-600 mt-8">
-          No blogs found. Be the first to create one!
+          You haven't created any blogs yet. Start writing!
         </div>
       )}
 
@@ -119,4 +163,4 @@ const BlogList = () => {
   );
 };
 
-export default BlogList; 
+export default MyBlogs; 

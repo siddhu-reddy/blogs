@@ -5,7 +5,8 @@ import {
   getBlogs,
   getBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  getUserBlogs
 } from '../controllers/blogController.js';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ router.get('/', getBlogs);
 router.get('/:id', getBlog);
 
 // Protected routes
+router.get('/user/blogs', auth, getUserBlogs);
 router.post('/', auth, createBlog);
 router.put('/:id', auth, updateBlog);
 router.delete('/:id', auth, deleteBlog);
